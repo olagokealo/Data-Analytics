@@ -1,0 +1,144 @@
+Analyzing US Economic Data and Building a Dashboard 
+Description
+Extracting essential data from a dataset and displaying it is a necessary part of data science; therefore individuals can make correct decisions based on the data. In this assignment, you will extract some essential economic indicators from some data, you will then display these economic indicators in a Dashboard. You can then share the dashboard via an URL.
+
+Gross domestic product (GDP) is a measure of the market value of all the final goods and services produced in a period. GDP is an indicator of how well the economy is doing. A drop in GDP indicates the economy is producing less; similarly an increase in GDP suggests the economy is performing better. In this lab, you will examine how changes in GDP impact the unemployment rate. You will take screen shots of every step, you will share the notebook and the URL pointing to the dashboard.
+
+Table of Contents
+Define a Function that Makes a Dashboard
+Question 1: Create a dataframe that contains the GDP data and display it
+Question 2: Create a dataframe that contains the unemployment data and display it
+Question 3: Display a dataframe where unemployment was greater than 8.5%
+Question 4: Use the function make_dashboard to make a dashboard
+(Optional not marked) Save the dashboard on IBM cloud and display it
+Estimated Time Needed: 180 min
+
+Define Function that Makes a Dashboard 
+We will import the following libraries.
+
+import pandas as pd
+from bokeh.plotting import figure, output_file, show, output_notebook
+output_notebook()
+In this section, we define the function make_dashboard. You don't have to know how the function works, you should only care about the inputs. The function will produce a dashboard as well as an html file. You can then use this html file to share your dashboard. If you do not know what an html file is don't worry everything you need to know will be provided in the lab.
+
+def make_dashboard(x, gdp_change, unemployment, title, file_name):
+    output_file(file_name)
+    p = figure(title=title, x_axis_label='year', y_axis_label='%')
+    p.line(x.squeeze(), gdp_change.squeeze(), color="firebrick", line_width=4, legend="% GDP change")
+    p.line(x.squeeze(), unemployment.squeeze(), line_width=4, legend="% unemployed")
+    show(p)
+The dictionary links contain the CSV files with all the data. The value for the key GDP is the file that contains the GDP data. The value for the key unemployment contains the unemployment data.
+
+links={'GDP':'https://s3-api.us-geo.objectstorage.softlayer.net/cf-courses-data/CognitiveClass/PY0101EN/projects/coursera_project/clean_gdp.csv',\
+       'unemployment':'https://s3-api.us-geo.objectstorage.softlayer.net/cf-courses-data/CognitiveClass/PY0101EN/projects/coursera_project/clean_unemployment.csv'}
+Question 1: Create a dataframe that contains the GDP data and display the first five rows of the dataframe.
+Use the dictionary links and the function pd.read_csv to create a Pandas dataframes that contains the GDP data.
+
+Hint: links["GDP"] contains the path or name of the file.
+
+# Type your code here
+gdp_csv = links['GDP']
+df_gdp = pd.read_csv(gdp_csv)
+Use the method head() to display the first five rows of the GDP data, then take a screen-shot.
+
+# Type your code here
+df_gdp.head()
+date	level-current	level-chained	change-current	change-chained
+0	1948	274.8	2020.0	-0.7	-0.6
+1	1949	272.8	2008.9	10.0	8.7
+2	1950	300.2	2184.0	15.7	8.0
+3	1951	347.3	2360.0	5.9	4.1
+4	1952	367.7	2456.1	6.0	4.7
+Question 2: Create a dataframe that contains the unemployment data. Display the first five rows of the dataframe. 
+Use the dictionary links and the function pd.read_csv to create a Pandas dataframes that contains the unemployment data.
+
+# Type your code here
+unemployment_csv = links['unemployment']
+df_unemployment = pd.read_csv(unemployment_csv)
+Use the method head() to display the first five rows of the GDP data, then take a screen-shot.
+
+# Type your code here
+df_unemployment.head()
+date	unemployment
+0	1948	3.750000
+1	1949	6.050000
+2	1950	5.208333
+3	1951	3.283333
+4	1952	3.025000
+Question 3: Display a dataframe where unemployment was greater than 8.5%. Take a screen-shot.
+# Type your code here
+new_df = df_unemployment[df_unemployment['unemployment']>8.5]
+print(new_df)
+    date  unemployment
+34  1982      9.708333
+35  1983      9.600000
+61  2009      9.283333
+62  2010      9.608333
+63  2011      8.933333
+Question 4: Use the function make_dashboard to make a dashboard
+In this section, you will call the function make_dashboard , to produce a dashboard. We will use the convention of giving each variable the same name as the function parameter.
+
+Create a new dataframe with the column 'date' called x from the dataframe that contains the GDP data.
+
+# Create your dataframe with column date
+x = df_gdp['date']
+print(x)
+0     1948
+1     1949
+2     1950
+3     1951
+4     1952
+      ... 
+64    2012
+65    2013
+66    2014
+67    2015
+68    2016
+Name: date, Length: 69, dtype: int64
+Create a new dataframe with the column 'change-current'  called gdp_change from the dataframe that contains the GDP data.
+
+# Create your dataframe with column change-current
+gdp_change = df_gdp['change-current']
+print(gdp_change)
+0     -0.7
+1     10.0
+2     15.7
+3      5.9
+4      6.0
+      ... 
+64     3.6
+65     4.4
+66     4.0
+67     2.7
+68     4.2
+Name: change-current, Length: 69, dtype: float64
+Create a new dataframe with the column 'unemployment'  called unemployment from the dataframe that contains the unemployment data.
+
+# Create your dataframe with column unemployment
+unemployment = df_unemployment['unemployment']
+print(unemployment)
+0     3.750000
+1     6.050000
+2     5.208333
+3     3.283333
+4     3.025000
+        ...   
+64    8.075000
+65    7.358333
+66    6.158333
+67    5.275000
+68    4.875000
+Name: unemployment, Length: 69, dtype: float64
+Give your dashboard a string title, and assign it to the variable title
+
+# Give your dashboard a string title
+title = "US Economic Dashboard"
+​
+Finally, the function make_dashboard will output an .html in your direictory, just like a csv file. The name of the file is "index.html" and it will be stored in the varable file_name.
+
+file_name = "index.html"
+Call the function make_dashboard , to produce a dashboard. Assign the parameter values accordingly take a the , take a screen shot of the dashboard and submit it.
+
+# Fill up the parameters in the following function:
+# make_dashboard(x=, gdp_change=, unemployment=, title=, file_name=)
+make_dashboard(x=df_gdp['date'], gdp_change=df_gdp['change-current'], unemployment=df_unemployment['unemployment'], title="US Economic Dashboard" , file_name="index.html" )
